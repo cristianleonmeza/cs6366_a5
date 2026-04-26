@@ -19,8 +19,6 @@ uniform vec3 lightDirection;
 uniform sampler2D colorMap;
 uniform sampler2D normalMap;
 
-
-
 void main() {
 	//PRE-CALCS
 	vec3 N = normalize(vcsNormal);
@@ -42,6 +40,9 @@ void main() {
 
 	//TOTAL
 	// TODO: Q1a, sample from texture
+	vec3 abd = texture(colorMap, texCoord).rgb;					//q1a
+	light_DFF = light_DFF*abd;									//q1a
+
 	vec3 TOTAL = light_AMB + light_DFF + light_SPC;
 
 	gl_FragColor = vec4(TOTAL, 1.0);

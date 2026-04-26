@@ -193,6 +193,10 @@ const floorMaterial = new THREE.ShaderMaterial({
 const shayDMaterial = new THREE.ShaderMaterial({
   side: THREE.DoubleSide,
   uniforms: {
+
+    lightColor: lightColorUniform,                      //q1a
+    ambientColor: ambientColorUniform,                  //q1a
+
     kAmbient: kAmbientUniform,
     kDiffuse: kDiffuseUniform,
     kSpecular: kSpecularUniform,
@@ -201,6 +205,10 @@ const shayDMaterial = new THREE.ShaderMaterial({
     cameraPos: cameraPositionUniform,
     lightPosition: lightPositionUniform,
     lightDirection: lightDirectionUniform,
+
+    colorMap: {type: "t", value: shayDColorTexture },  //q1a
+    normalMap: {type: "t", value: shayDNormalTexture },//q1a
+
   }
 });
 
