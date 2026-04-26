@@ -4,6 +4,12 @@
 uniform sampler2D tDiffuse;
 uniform sampler2D tDepth;
 
+in vec2 texCoord;                                   //q1d
+uniform sampler2D tDepth;                           //q1d
+
 void main() {
-    gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+
+    float d = texture(tDepth, texCoord).r;          //q1d
+    gl_FragColor = vec4(vec3(d), 1.0);              //q1d
+    //gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);      //q1d
 }

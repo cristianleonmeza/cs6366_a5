@@ -408,17 +408,30 @@ function update() {
   {
     // Q1d Visualise the shadow map
     // TODO: First pass to get the depth value
+    renderer.setRenderTarget(renderTarget);                             //q1d
+    renderer.clear();                                                   //q1d
+    renderer.render(shadowScene, shadowCam);                            //q1d
 
     // TODO: Second Pass, visualise shadow map to quad
-    
+    postMaterial.uniforms.tDepth.value = renderTarget.depthTexture;     //q1d
+    renderer.setRenderTarget(null);                                     //q1d
+    renderer.clear();                                                   //q1d
+    renderer.render(postScene, postCam);                                //q1d
   }
   else if (sceneHandler == 3) 
   {
     // Q1d Do the multipass shadowing
     // TODO: First pass
+    renderer.setRenderTarget(renderTarget);                             //q1d
+    renderer.clear();                                                   //q1d
+    renderer.render(shadowScene, shadowCam);                            //q1d
     
     // TODO: True second pass, change below
+    floorMaterial.uniforms.shadowMap.value = renderTarget.depthTexture; //q1d
+    floorMaterial.uniforms.textureSize.value = renderTarget.width;      //q1d
+
     renderer.setRenderTarget( null );
+    renderer.clear();                                                   //q1d
     renderer.render( scene, camera );
 
   } 

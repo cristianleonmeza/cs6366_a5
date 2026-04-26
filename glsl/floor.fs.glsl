@@ -27,12 +27,35 @@ uniform float textureSize;
 //Q1d iii do PCF
 // Returns 1 if point is occluded (saved depth value is smaller than fragment's depth value)
 float inShadow(vec3 fragCoord, vec2 offset) {
-	return 0.0;
+
+    vec2 uv = fragCoord.xy + offset / textureSize;
+
+    if (uv.x < 0.0 || uv.x > 1.0 || uv.y < 0.0 || uv.y > 1.0) return 0.0;	//q1d: outside shadow map (not shadowed)
+
+    float closest = texture(shadowMap, uv).r;								//q1d
+    float current = fragCoord.z;											//q1d
+    float bias = 0.0015; // tweak if acne/peter-panning appears				//q1d
+
+    return current - bias > closest ? 1.0 : 0.0;							//q1d
+	//return 0.0;															//q1d
 }
 
 // TODO: Returns a value in [0, 1], 1 indicating all sample points are occluded
 float calculateShadow() {
-	return 0.0;
+	
+    vec3 proj = lightSpaceCoords.xyz / lightSpaceCoords.w;					//q1d: perspective divide to NDC
+    proj = proj * 0.5 + 0.5;												//q1d: NDC [-1,1] to texture [0,1]
+
+    if (proj.z > 1.0) return 0.0;											//q1d: if behind light far plane
+
+    float occluded = 0.0;													//q1d
+    for (int x = -1; x <= 1; x++) {											//q1d
+        for (int y = -1; y <= 1; y++) {										//q1d
+            occluded += inShadow(proj, vec2(float(x), float(y)));			//q1d
+        }																	//q1d
+    }																		//q1d
+    return occluded / 9.0; 													//q1d: PCF
+	//return 0.0;															//q1d
 }
 
 void main() {
@@ -56,7 +79,9 @@ void main() {
 
 	//SHADOW
 	// TODO:
-	float shadow = 1.0;
+	float shadowAmount = calculateShadow();											//q1d
+	float shadow = 1.0 - shadowAmount;												//q1d
+	//float shadow = 1.0;															//q1d
 
 	//TOTAL
 	light_DFF *= texture(colorMap, texCoord).xyz;
