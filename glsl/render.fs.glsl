@@ -5,7 +5,6 @@ uniform sampler2D tDiffuse;
 uniform sampler2D tDepth;
 
 in vec2 texCoord;                                   //q1d
-uniform sampler2D tDepth;                           //q1d
 
 void main() {
 
