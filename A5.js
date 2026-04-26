@@ -232,8 +232,10 @@ const matWorldUniform = {type: 'v3', value: camera.matrixWorld};
 // Q1c HINT : Pass the necessary uniforms
 const envmapMaterial = new THREE.ShaderMaterial({
   uniforms: {
-    lightDirection: lightDirectionUniform,
-    matrixWorld: {type: "m4", value: camera.matrixWorldInverse}
+    //lightDirection: lightDirectionUniform,                      //q1c
+    skybox: {type: "t", value: skyboxCubemap},                    //q1c
+    //matrixWorld: {type: "m4", value: camera.matrixWorldInverse} //q1c
+    matrixWorld: {type: "m4", value: camera.matrixWorld}        //q1c
   }
 });
 
